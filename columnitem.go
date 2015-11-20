@@ -11,8 +11,11 @@ type columnItem struct {
 	value columnItemType
 }
 
-func newColumnItem(index uint, value columnItemType) *columnItem {
+// NewColumnItem allocates a new column item.
+// This should only be called once to create the root item as new items are automatically added to the linked list by the set method.
+func NewColumnItem(index uint, value columnItemType) *columnItem {
 	n := columnItem{
+		index: index,
 		value: value,
 		count: 1,
 	}
@@ -25,24 +28,60 @@ func newColumnItem(index uint, value columnItemType) *columnItem {
 //  10      5       10  14
 //
 
-func (c *columnItem) set(index uint, value) {
+func (c *columnItem) set(index uint, value columnItemType) {
+	current := c
 
-    if index < c.low() {
-        // before this item
-    } else if index > c.high() {
-        // after this item
-        } else {
-            // in the range of this item
-        }
+	var isInRange int
+	// attempt to find the item that holds the range of the index we want to add
+loop:
+	for {
+		isInRange = c.InRange(index)
+		switch {
+		case isInRange == -1:
+			if current.p != nil {
+				current = current.p // move to previous
+			} else {
+				break loop
+			}
+		case isInRange == +1:
+			if current.n != nil {
+				current = current.n //move to next
+			} else {
+				break loop
+			}
+		default:
+			{
+
+				break loop
+			}
+		}
+	}
+
+	// current should now point to an item holding the range
+	// if isInRange != 0 then this is either the first or last item that is not in the range.
+	n := NewColumnItem(index, value)
+
+	switch {
+	case isInRange == -1:
+		current.insertBefore(n)
+	case isInRange == +1:
+		current.insertAfter(n)
+	default:
+		panic("Expected to insert into the same item")
+	}
+
 }
 
-
-func (c *columnItem) low() uint {
-	return c.index
-}
-
-func (c *columnItem) high() uint {
-	return c.index + c.count - 1
+// InRange returns -1 if the index is lower, 0 if in the range and +1 if after the range covered by the columnItem
+func (c *columnItem) InRange(index uint) int {
+	switch {
+	case index < c.index:
+		return -1
+	case index > c.index+c.count-1:
+		return +1
+	default:
+		return 0
+	}
 }
 
 // Adds an item before the current item

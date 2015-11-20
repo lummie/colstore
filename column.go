@@ -1,9 +1,6 @@
 package colstore
 
-import (
-	"fmt"
-	"math/big"
-)
+import "math/big"
 
 // ColType todo
 type ColType int
@@ -33,6 +30,7 @@ func NewColumnBlock(offset *big.Int, size uint64) *ColumnBlock {
 	return &n
 }
 
+/*
 // Set sets the stored value at external index to value
 func (c *ColumnBlock) Set(index *big.Int, value ColType) {
 	diff := big.NewInt(0).Sub(index, c.offset)
@@ -51,7 +49,7 @@ func (c *ColumnBlock) Set(index *big.Int, value ColType) {
 func (c *ColumnBlock) setInternal(internalIndex uint64, value ColType) {
 	current := c.root
 
-}
+}*/
 
 // LBound returns the lower boundary of the indexes this block represents
 func (c *ColumnBlock) LBound() *big.Int {
