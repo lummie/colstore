@@ -28,7 +28,7 @@ func NewColumnItem(index uint, value columnItemType) *columnItem {
 //  10      5       10  14
 //
 
-func (c *columnItem) set(index uint, value columnItemType) {
+func (c *columnItem) Set(index uint, value columnItemType) *columnItem {
 	current := c
 
 	var isInRange int
@@ -69,7 +69,7 @@ loop:
 	default:
 		panic("Expected to insert into the same item")
 	}
-
+	return n
 }
 
 // InRange returns -1 if the index is lower, 0 if in the range and +1 if after the range covered by the columnItem
@@ -101,7 +101,7 @@ func (c *columnItem) insertBefore(n *columnItem) {
 
 // Adds an item before the next item
 func (c *columnItem) insertAfter(n *columnItem) {
-	o := c.p // store next
+	o := c.n // store next
 
 	// c: c.n = n (current)
 	// n: n.p = c, n.n = o  (new)
