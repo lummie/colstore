@@ -72,6 +72,33 @@ loop:
 	return n
 }
 
+/*func (c *columnItem) findNearest(index uint) *columnItem {
+	current := c
+	var isInRange int
+	for {
+		isInRange = c.InRange(index)
+		switch {
+		case isInRange == -1:
+			if current.p != nil {
+				current = current.p // move to previous
+			} else {
+				break loop
+			}
+		case isInRange == +1:
+			if current.n != nil {
+				current = current.n //move to next
+			} else {
+				break loop
+			}
+		default:
+			{
+
+				break loop
+			}
+		}
+	}
+}*/
+
 // InRange returns -1 if the index is lower, 0 if in the range and +1 if after the range covered by the columnItem
 func (c *columnItem) InRange(index uint) int {
 	switch {

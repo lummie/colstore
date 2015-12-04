@@ -154,11 +154,3 @@ func BenchmarkSequentialForwardDynamicRoot(b *testing.B) {
 		root = root.Set(uint(n), columnItemType(n))
 	}
 }
-
-func BenchmarkSequentialForwardDynamicRootLots(b *testing.B) {
-	root := NewColumnItem(0, 0)
-	println(b.N)
-	for n := 1; n < 4000000000; n++ {
-		root = root.Set(uint(n), columnItemType(n))
-	}
-}
